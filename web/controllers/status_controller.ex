@@ -7,7 +7,7 @@ defmodule Sitback.StatusController do
   end
 
   def show(conn, _params) do
-    text conn, "{ \"status\": \"received\" }"
+    text conn, "{ \"location_name\": \"トイレ\", \"user_name\": \"brian\", \"distance\": \"NEAR\" }"
   end
 
   def create_or_update(conn, _params) do
