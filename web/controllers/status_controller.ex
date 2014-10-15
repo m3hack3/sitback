@@ -1,8 +1,9 @@
 defmodule Sitback.StatusController do
   use Phoenix.Controller
 
-  def index(conn, _params) do
-    render conn, "index"
+  def test(conn, _params) do
+    statuses = Sitback.Queries.statuses_query
+    render conn, "test", statuses: statuses
   end
 
   def show(conn, _params) do

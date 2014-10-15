@@ -1,0 +1,6 @@
+<h1>List Of Statuses</h1>
+<ul>
+<%= for status <- @statuses do %>
+  <li><%= status.beacon_version_major %> - <%= status.beacon_version_minor %> - <%= status.user_name %> - <%= status.distance %></li>
+<% end %>
+</ul>
