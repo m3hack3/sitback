@@ -10,8 +10,8 @@ defmodule Sitback do
       # Define workers and child supervisors to be supervised
       # worker(TestApp.Worker, [arg1, arg2, arg3])
     ]
-
+    tree = [worker(Sitback.Repo, [])]
     opts = [strategy: :one_for_one, name: Sitback.Supervisor]
-    Supervisor.start_link(children, opts)
+    Supervisor.start_link(tree, opts)
   end
 end
