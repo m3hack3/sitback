@@ -8,7 +8,7 @@ defmodule Sitback.StatusController do
 
   def show(conn, _params) do
     status = Sitback.Queries.status_by_user_name(_params["user_name"])
-    location = "トイレ" # TODO:
+    location = Sitback.Location.location_by_beacon_version(status.beacon_version_major, status.beacon_version_minor)
     json conn, JSON.encode! %{ user_name: status.user_name, distance: status.distance, location: location }
   end
 
