@@ -8,6 +8,7 @@ defmodule Sitback.Views do
       # This block is expanded within all views for aliases, imports, etc
       import Sitback.I18n
       import Sitback.Router.Helpers
+      alias Phoenix.Controller.Flash
     end
   end
 

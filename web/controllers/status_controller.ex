@@ -1,6 +1,10 @@
 defmodule Sitback.StatusController do
   use Phoenix.Controller
 
+  plug :action
+
+  alias Poison, as: JSON
+
   def test(conn, _params) do
     statuses = Sitback.Queries.statuses_query
     render conn, "test", statuses: statuses

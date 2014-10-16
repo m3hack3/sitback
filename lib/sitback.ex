@@ -8,9 +8,12 @@ defmodule Sitback do
 
     children = [
       # Define workers and child supervisors to be supervised
-      # worker(TestApp.Worker, [arg1, arg2, arg3])
+      # worker(Sitback.Worker, [arg1, arg2, arg3])
     ]
     tree = [worker(Sitback.Repo, [])]
+
+    # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
+    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Sitback.Supervisor]
     Supervisor.start_link(tree, opts)
   end

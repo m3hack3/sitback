@@ -1,23 +1,20 @@
 use Mix.Config
 
-# NOTE: To get SSL working, you will need to set:
+# ## SSL Support
 #
-#     ssl: true,
-#     keyfile: System.get_env("SOME_APP_SSL_KEY_PATH"),
-#     certfile: System.get_env("SOME_APP_SSL_CERT_PATH"),
+# To get SSL working, you will need to set:
 #
-# Where those two env variables point to a file on disk
-# for the key and cert
+#     https: [port: 443,
+#             keyfile: System.get_env("SOME_APP_SSL_KEY_PATH"),
+#             certfile: System.get_env("SOME_APP_SSL_CERT_PATH")]
+#
+# Where those two env variables point to a file on
+# disk for the key and cert.
 
 config :phoenix, Sitback.Router,
-  port: System.get_env("PORT"),
-  ssl: false,
-  host: "example.com",
-  cookies: true,
-  session_key: "_sitback_key",
-  session_secret: "%XI_MODICOK3L#V71UCY6L%1PPTUDOJ(XN4#S@19C$60RIXN(F4P78LG2XN81YY1PLO13^3"
+  url: [host: "example.com"],
+  http: [port: System.get_env("PORT")],
+  secret_key_base: "GvGvVONjxPv3GAP5qcIW7IjJNaml3MNqBI3lASJZz/KTOOxFWkGvLfadcK0Mxixz+4d4/Er42PhUc+XP5OOEqQ=="
 
 config :logger, :console,
-  level: :info,
-  metadata: [:request_id]
-
+  level: :info
