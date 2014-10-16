@@ -6,15 +6,15 @@ defmodule Sitback.StatusController do
     render conn, "test", statuses: statuses
   end
 
-  def show(conn, _params) do
-    status = Sitback.Queries.status_by_user_name(_params["user_name"])
+  def show(conn, params) do
+    status = Sitback.Queries.status_by_user_name(params["user_name"])
     location = Sitback.Location.location_by_beacon_version(status.beacon_version_major, status.beacon_version_minor)
     json conn, JSON.encode! %{ user_name: status.user_name, distance: status.distance, location: location }
   end
 
-  def create_or_update(conn, _params) do
-    status = Sitback.Queries.status_by_user_name(_params["user_name"])
-    create_or_update_status(_params, status)
+  def create_or_update(conn, params) do
+    status = Sitback.Queries.status_by_user_name(params["user_name"])
+    create_or_update_status(params, status)
     json conn, "{ \"status\": \"updated\" }"
   end
 
