@@ -11,6 +11,25 @@ defmodule Sitback.StatusController do
   end
 
   def create_or_update(conn, _params) do
-    text conn, "{ \"location_name\": \"トイレ\", \"user_name\": \"brian\", \"distance\": \"NEAR\" }"
+    status = Sitback.Queries.status_by_user_name(_params["user_name"])
+    create_or_update_status(_params, status)
+    text conn, "{ \"status\": \"updated\" }"
+  end
+
+  defp create_or_update_status(params, nil) do
+    status = %Sitback.Statuses{
+      beacon_version_major: params["beacon_version_major"],
+      beacon_version_minor: params["beacon_version_minor"],
+      user_name: params["user_name"],
+      distance: params["distance"]
+    }
+    Sitback.Repo.insert(status)
+  end
+
+  defp create_or_update_status(params, status) do
+    status = %{status | beacon_version_major: params["beacon_version_major"],
+      beacon_version_minor: params["beacon_version_minor"],
+      distance: params["distance"]}
+    Sitback.Repo.update(status)
   end
 end
