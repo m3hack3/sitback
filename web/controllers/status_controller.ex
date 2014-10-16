@@ -7,13 +7,13 @@ defmodule Sitback.StatusController do
   end
 
   def show(conn, _params) do
-    text conn, "{ \"location_name\": \"トイレ\", \"user_name\": \"brian\", \"distance\": \"NEAR\" }"
+    json conn, "{ \"location_name\": \"トイレ\", \"user_name\": \"brian\", \"distance\": \"NEAR\" }"
   end
 
   def create_or_update(conn, _params) do
     status = Sitback.Queries.status_by_user_name(_params["user_name"])
     create_or_update_status(_params, status)
-    text conn, "{ \"status\": \"updated\" }"
+    json conn, "{ \"status\": \"updated\" }"
   end
 
   defp create_or_update_status(params, nil) do
