@@ -18,7 +18,7 @@ defmodule Sitback.StatusController do
   end
 
   def histories(conn, params) do
-    statuses = Sitback.Queries.statuses_by_user_name(params["user_name"], params["limit"])
+    statuses = Sitback.Queries.statuses_by_user_name(params["user_name"], String.to_integer(params["limit"] || "10"))
       |> Enum.map fn(status) ->
         %{
           user_name: status.user_name, distance: status.distance,
