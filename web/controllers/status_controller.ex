@@ -50,7 +50,8 @@ defmodule Sitback.StatusController do
       beacon_version_major: params["beacon_version_major"],
       beacon_version_minor: params["beacon_version_minor"],
       user_name: params["user_name"],
-      distance: params["distance"]
+      distance: params["distance"],
+      created_at: Ecto.DateTime.local
     }
     Sitback.Repo.insert(status)
     status

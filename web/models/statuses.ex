@@ -6,5 +6,6 @@ defmodule Sitback.Statuses do
     field :beacon_version_minor, :string
     field :user_name, :string
     field :distance, :string
+    field :created_at, :datetime
   end
 end
