@@ -5,7 +5,7 @@ defmodule Sitback.Router do
     # Use the default browser stack.
     pipe_through :browser
 
-    get "/", Sitback.PageController, :index, as: :pages
+    get "/", Sitback.PageController, :index
 
     get "/statuses/test", Sitback.StatusController, :test
     get "/statuses", Sitback.StatusController, :show

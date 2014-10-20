@@ -3,7 +3,7 @@
   "decimal": {:hex, :decimal, "0.2.5"},
   "ecto": {:hex, :ecto, "0.2.5"},
   "linguist": {:hex, :linguist, "0.1.2"},
-  "phoenix": {:hex, :phoenix, "0.5.0"},
+  "phoenix": {:git, "git://github.com/phoenixframework/phoenix.git", "fe61abfe35798395883e8334489afb9afd1cbc6f", []},
   "plug": {:hex, :plug, "0.8.1"},
   "poison": {:hex, :poison, "1.2.0"},
   "poolboy": {:hex, :poolboy, "1.2.1"},

@@ -1,4 +1,4 @@
 defmodule Sitback.StatusView do
-  use Sitback.Views
+  use Sitback.View
 
 end

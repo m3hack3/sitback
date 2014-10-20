@@ -1,4 +1,4 @@
 defmodule Sitback.PageView do
-  use Sitback.Views
+  use Sitback.View
 
 end
