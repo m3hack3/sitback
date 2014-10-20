@@ -15,7 +15,7 @@ defmodule Sitback.Mixfile do
   # Type `mix help compile.app` for more information
   def application do
     [mod: {Sitback, []},
-     applications: [:phoenix, :cowboy, :logger, :postgrex, :ecto]]
+     applications: [:phoenix, :cowboy, :logger, :postgrex, :ecto, :timex]]
   end
 
   # Specifies your project dependencies
@@ -25,6 +25,7 @@ defmodule Sitback.Mixfile do
     [{:phoenix, github: "phoenixframework/phoenix"},
      {:cowboy, "~> 1.0"},
      {:postgrex, ">= 0.0.0"},
-     {:ecto, "~> 0.2.0"}]
+     {:ecto, "~> 0.2.0"},
+     {:timex, "~> 0.12.9"}]
   end
 end

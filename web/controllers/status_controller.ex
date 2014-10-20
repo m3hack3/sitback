@@ -14,7 +14,11 @@ defmodule Sitback.StatusController do
   def show(conn, params) do
     status = Sitback.Queries.last_status_by_user_name(params["user_name"])
     location = Sitback.Location.location_by_beacon_version(status.beacon_version_major, status.beacon_version_minor)
-    json conn, JSON.encode! %{ user_name: status.user_name, distance: status.distance, location: location }
+    at = status.created_at
+    json conn, JSON.encode! %{
+      user_name: status.user_name, distance: status.distance, location: location,
+      created_at: Timex.DateFormat.format!(Timex.Date.from({{at.year, at.month, at.day}, {at.hour, at.min, at.sec}}), "{ISO}")
+    }
   end
 
   def histories(conn, params) do
@@ -22,7 +26,8 @@ defmodule Sitback.StatusController do
       |> Enum.map fn(status) ->
         %{
           user_name: status.user_name, distance: status.distance,
-          location: Sitback.Location.location_by_beacon_version(status.beacon_version_major, status.beacon_version_minor)
+          location: Sitback.Location.location_by_beacon_version(status.beacon_version_major, status.beacon_version_minor),
+          created_at: Timex.DateFormat.format!(Timex.Date.from({{status.created_at.year, status.created_at.month, status.created_at.day}, {status.created_at.hour, status.created_at.min, status.created_at.sec}}), "{ISO}")
         }
       end
     json conn, JSON.encode! statuses
