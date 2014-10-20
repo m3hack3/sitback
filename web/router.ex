@@ -9,7 +9,8 @@ defmodule Sitback.Router do
 
     get "/statuses/test", Sitback.StatusController, :test
     get "/statuses", Sitback.StatusController, :show
-    post "/statuses", Sitback.StatusController, :create_or_update
+    get "/statuses/histories", Sitback.StatusController, :histories
+    post "/statuses", Sitback.StatusController, :insert_or_nothing
   end
 
   # Other scopes may use custom stacks.

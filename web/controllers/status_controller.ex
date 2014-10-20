@@ -12,19 +12,40 @@ defmodule Sitback.StatusController do
   end
 
   def show(conn, params) do
-    status = Sitback.Queries.status_by_user_name(params["user_name"])
+    status = Sitback.Queries.last_status_by_user_name(params["user_name"])
     location = Sitback.Location.location_by_beacon_version(status.beacon_version_major, status.beacon_version_minor)
     json conn, JSON.encode! %{ user_name: status.user_name, distance: status.distance, location: location }
   end
 
-  def create_or_update(conn, params) do
-    status = Sitback.Queries.status_by_user_name(params["user_name"])
-    status = create_or_update_status(params, status)
-    Logger.info "STATUS_INFO: user_name: #{status.user_name}, major: #{status.beacon_version_major}, minor: #{status.beacon_version_minor}, distance: #{status.distance}"
-    json conn, "{ \"status\": \"updated\" }"
+  def histories(conn, params) do
+    statuses = Sitback.Queries.statuses_by_user_name(params["user_name"], params["limit"])
+      |> Enum.map fn(status) ->
+        %{
+          user_name: status.user_name, distance: status.distance,
+          location: Sitback.Location.location_by_beacon_version(status.beacon_version_major, status.beacon_version_minor)
+        }
+      end
+    json conn, JSON.encode! statuses
   end
 
-  defp create_or_update_status(params, nil) do
+  def insert_or_nothing(conn,params) do
+    status = Sitback.Queries.last_status_by_user_name(params["user_name"])
+    if (status == nil) || (status != nil && status_changed?(params, status)) do
+      status = insert_status(params)
+      Logger.info "INSERT_INFO: user_name: #{status.user_name}, major: #{status.beacon_version_major}, minor: #{status.beacon_version_minor}, distance: #{status.distance}"
+      json conn, "{ \"status\": \"inserted\" }"
+    else
+      json conn, "{ \"status\": \"donothing\" }"
+    end
+  end
+
+  defp status_changed?(params, status) do
+    (params["beacon_version_major"] != status.beacon_version_major ||
+     params["beacon_version_minor"] != status.beacon_version_minor ||
+     params["distance"] != status.distance)
+  end
+
+  defp insert_status(params) do
     status = %Sitback.Statuses{
       beacon_version_major: params["beacon_version_major"],
       beacon_version_minor: params["beacon_version_minor"],
@@ -32,14 +53,6 @@ defmodule Sitback.StatusController do
       distance: params["distance"]
     }
     Sitback.Repo.insert(status)
-    status
-  end
-
-  defp create_or_update_status(params, status) do
-    status = %{status | beacon_version_major: params["beacon_version_major"],
-      beacon_version_minor: params["beacon_version_minor"],
-      distance: params["distance"]}
-    Sitback.Repo.update(status)
     status
   end
 end
