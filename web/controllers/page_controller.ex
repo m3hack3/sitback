@@ -7,6 +7,10 @@ defmodule Sitback.PageController do
     render conn, "index"
   end
 
+  def status(conn, _params) do
+    render conn, "status"
+  end
+
   def not_found(conn, _params) do
     render conn, "not_found"
   end

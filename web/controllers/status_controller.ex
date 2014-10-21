@@ -37,6 +37,10 @@ defmodule Sitback.StatusController do
     status = Sitback.Queries.last_status_by_user_name(params["user_name"])
     if (status == nil) || (status != nil && status_changed?(params, status)) do
       status = insert_status(params)
+      Phoenix.Channel.broadcast "channel", "status", "update", %{
+        user_name: status.user_name, distance: status.distance,
+        location: Sitback.Location.location_by_beacon_version(status.beacon_version_major, status.beacon_version_minor)
+      }
       Logger.info "INSERT_INFO: user_name: #{status.user_name}, major: #{status.beacon_version_major}, minor: #{status.beacon_version_minor}, distance: #{status.distance}"
       json conn, "{ \"status\": \"inserted\" }"
     else
