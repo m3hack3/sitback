@@ -22,24 +22,31 @@ $(function() {
     var loader = new THREE.OBJLoader();
     loader.load('/models/toilet.obj', function(res) {
         toilet = res;
-        toilet.position.set(-70, -20, -70);
-        toilet.rotation.set(0, -Math.PI/2, 0);
+        toilet.position.set(-80, -20, -70);
+        toilet.rotation.set(0, -Math.PI * 2/3, 0);
         scene.add(toilet);
+    });
+    var poo;
+    loader.load('/models/poo.obj', function(res) {
+        poo = res;
+        poo.position.set(-80, 200, -70);
+        poo.rotation.set(-Math.PI/2, 0, 0);
+        scene.add(poo);
     });
     var figure;
     loader.load('/models/figure.obj', function(res) {
         figure = res;
-        figure.position.set(0, -20, -70);
-        figure.scale.set(5, 5, 5);
+        figure.position.set(0, -20, -60);
+        figure.scale.set(7, 7, 7);
         //figure.rotation.set(0, -Math.PI/2, 0);
         scene.add(figure);
     });
     var desk;
-    loader.load('/models/desk_chair.obj', function(res) {
+    loader.load('/models/desk.obj', function(res) {
         desk = res;
-        desk.position.set(90, -20, -70);
-        desk.scale.set(10, 10, 10);
-        //figure.rotation.set(0, -Math.PI/2, 0);
+        desk.position.set(70, -20, -70);
+        desk.scale.set(0.1, 0.1, 0.1);
+        desk.rotation.set(0, -Math.PI/3, 0);
         scene.add(desk);
     });
 
@@ -78,7 +85,7 @@ $(function() {
         } else {
             distance = distance_to_point[status.distance];
         }
-        figure.position.set(distance, -20, -70);
+        figure.position.set(distance, -20, -60);
       });
     
       channel.on("join", function(message) {
