@@ -1,29 +1,6 @@
 $(function() {
   var $status= $("#status")
   if ($status.size() > 0) {
-    var socket = new Phoenix.Socket("/ws");
-    
-    socket.join("channel", "status", {}, function(channel) {
-      channel.on("update", function(status) {
-        var status_str =  status.user_name + "が" + status.location + "に" + status.distance;
-        $status.html(status_str);
-        console.log(status_str);
-      });
-    
-      channel.on("join", function(message) {
-        console.log("Got " + message.content);
-      });
-    
-      channel.on("error", function(error) {
-        console.log("Failed to join topic. Reason: " + error.reason);
-      });
-    
-    //  setInterval(function() {
-    //    channel.send("ping", {data: "json stuff"});
-    //  }, 1000);
-    
-    });
-
     var scene = new THREE.Scene();
 
     var width  = 600;
@@ -48,7 +25,6 @@ $(function() {
         toilet.position.set(-70, -20, -70);
         toilet.rotation.set(0, -Math.PI/2, 0);
         scene.add(toilet);
-        //renderer.render(scene, camera);
     });
     var figure;
     loader.load('/models/figure.obj', function(res) {
@@ -57,7 +33,14 @@ $(function() {
         figure.scale.set(5, 5, 5);
         //figure.rotation.set(0, -Math.PI/2, 0);
         scene.add(figure);
-        //renderer.render(scene, camera);
+    });
+    var desk;
+    loader.load('/models/desk_chair.obj', function(res) {
+        desk = res;
+        desk.position.set(90, -20, -70);
+        desk.scale.set(10, 10, 10);
+        //figure.rotation.set(0, -Math.PI/2, 0);
+        scene.add(desk);
     });
 
     var directionalLight = new THREE.DirectionalLight(0xffffff);
@@ -73,14 +56,39 @@ $(function() {
 
     (function renderLoop() {
         requestAnimationFrame(renderLoop);
-        if (toilet) {
-//           toilet.rotation.set(
-//               0,
-//               toilet.rotation.y + 0.01,
-//               toilet.rotation.z + 0.01
-//           );
-        }
         renderer.render(scene, camera);
     })();
+
+    var socket = new Phoenix.Socket("/ws");
+    var distance_to_point = {
+        "Immediate": 69,
+        "Near": 60,
+        "Far": 10,
+        "Out": 0
+    }
+    
+    socket.join("channel", "status", {}, function(channel) {
+      channel.on("update", function(status) {
+        var status_str =  status.user_name + "が" + status.location + "に" + status.distance;
+        $status.html(status_str);
+        console.log(status_str);
+        var distance;
+        if (status.location == "toilet") {
+            distance = - distance_to_point[status.distance];
+        } else {
+            distance = distance_to_point[status.distance];
+        }
+        figure.position.set(distance, -20, -70);
+      });
+    
+      channel.on("join", function(message) {
+        console.log("Got " + message.content);
+      });
+    
+      channel.on("error", function(error) {
+        console.log("Failed to join topic. Reason: " + error.reason);
+      });
+    
+    });
   }
 });
