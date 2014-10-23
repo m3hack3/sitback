@@ -17,6 +17,10 @@ $(function() {
     renderer.setSize(width, height);
     document.body.appendChild(renderer.domElement);
 
+    var poo_pos = {
+        x: -80, y: 50, z: -70
+    }
+
     // load model
     var toilet;
     var loader = new THREE.OBJLoader();
@@ -29,7 +33,7 @@ $(function() {
     var poo;
     loader.load('/models/poo.obj', function(res) {
         poo = res;
-        poo.position.set(-80, 200, -70);
+        poo.position.set(poo_pos['x'], poo_pos['y'], poo_pos['z']);
         poo.rotation.set(-Math.PI/2, 0, 0);
         scene.add(poo);
     });
@@ -63,6 +67,9 @@ $(function() {
 
     (function renderLoop() {
         requestAnimationFrame(renderLoop);
+        if (poo) {
+            poo.position.set(poo_pos['x'], poo_pos['y'], poo_pos['z']);
+        }
         renderer.render(scene, camera);
     })();
 
@@ -82,6 +89,16 @@ $(function() {
         var distance;
         if (status.location == "toilet") {
             distance = - distance_to_point[status.distance];
+            if (status.distance == "Immediate") {
+                var time = new Date();
+                var moveTimerId = setInterval(function() {
+                    poo_pos['y'] -= 5;
+                    if (new Date() - time > 1000) {
+                        poo_pos['y'] = 0;
+                        clearInterval(moveTimerId);
+                    }
+                }, 100);
+            }
         } else {
             distance = distance_to_point[status.distance];
         }
