@@ -3,8 +3,8 @@ $(function() {
   if ($status.size() > 0) {
     var scene = new THREE.Scene();
 
-    var width  = 600;
-    var height = 400;
+    var width  = 720;
+    var height = 480;
     var fov    = 60;
     var aspect = width / height;
     var near   = 1;
@@ -15,7 +15,7 @@ $(function() {
 
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize(width, height);
-    document.body.appendChild(renderer.domElement);
+    document.getElementsByClassName("webgl")[0].appendChild(renderer.domElement);
 
     var poo_pos = {
         x: -80, y: 50, z: -70
